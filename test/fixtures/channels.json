@@ -1,0 +1,26 @@
+{
+  "etag": "",
+  "items": [
+    {
+      "id": {
+        "channelId": ""
+      },
+      "snippet": {
+        "channelId": "",
+        "channelTitle": "",
+        "description": "",
+        "title": "",
+        "thumbnails": {
+          "default": {
+            "url": ""
+          }
+        }
+      }
+    }
+  ],
+  "nextPageToken": "",
+  "pageInfo": {
+    "resultsPerPage": "",
+    "totalResults": ""
+  }
+}

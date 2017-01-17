@@ -1,0 +1,17 @@
+{
+  "items": [
+    {
+      "id": {
+        "videoId": ""
+      },
+      "snippet": {
+        "title": ""
+      }
+    }
+  ],
+  "nextPageToken": "",
+  "pageInfo": {
+    "resultsPerPage": "",
+    "totalResults": ""
+  }
+}
