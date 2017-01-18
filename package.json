@@ -1,0 +1,41 @@
+{
+  "scripts": {
+    "serve": "browser-sync start --server './' --index 'index.html' --files 'build/main.css, ./bundle.js'",
+    "build:css": "postcss -c ./postcss-config.js",
+    "watch:css": "postcss -c ./postcss-config.js -w",
+    "build:fp:js": "browserify --full-paths -d app/index.js -o build/bundle.js -t [ babelify --presets [ es2015  ] --plugins [ inferno ] ]",
+    "build:js": "browserify --debug -d app/index.js -o bundle.js  -t [ babelify --presets [ es2015  ] --plugins [ inferno ] ]",
+    "watch:js": "watchify --debug -d app/index.js -o bundle.js  -t [ babelify --presets [ es2015  ] --plugins [ inferno ] ]",
+    "start": "npm run watch:js & npm run watch:css & npm run serve",
+    "minify:js": "babili build/bundle.js -o build/bundle.min.js",
+    "bundle:analysis": "npm run build:fp:js && npm run minify:js && discify build/bundle.min.js > disc.html --open",
+    "inspect:gzip": "gzip-size build/bundle.min.js | pretty-bytes"
+  },
+  "name": "tekoa",
+  "version": "1.0.0",
+  "main": "index.js",
+  "author": "nafta <naftasan@gmail.com>",
+  "license": "MIT",
+  "dependencies": {
+    "inferno": "^1.2.0",
+    "inferno-component": "^1.2.0",
+    "youtube-player": "4.0.2"
+  },
+  "devDependencies": {
+    "babel-plugin-inferno": "^1.5.0",
+    "babel-preset-es2015": "^6.18.0",
+    "babelify": "^7.3.0",
+    "babili": "^0.0.9",
+    "browser-sync": "^2.18.6",
+    "browserify": "^13.3.0",
+    "css-mqpacker": "^5.0.1",
+    "disc": "^1.3.2",
+    "postcss-cli": "^2.6.0",
+    "postcss-css-variables": "^0.6.0",
+    "postcss-custom-media": "^5.0.1",
+    "postcss-easy-import": "^2.0.0",
+    "postcss-nesting": "^2.3.1",
+    "sugarss": "^0.2.0",
+    "watchify": "^3.8.0"
+  }
+}
