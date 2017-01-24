@@ -2,11 +2,15 @@ module.exports = {
   use: [
     "postcss-easy-import",
     "postcss-nesting",
+    "postcss-hsb-color",
     "postcss-css-variables",
     "css-mqpacker",
     "postcss-custom-media"
   ],
   parser: "sugarss",
+  "postcss-css-variables": {
+    preserve: true
+  },
   "postcss-easy-import": {
     extensions: ['.sss'],
     onImport: function(sources) {
@@ -14,5 +18,6 @@ module.exports = {
     }
   },
   "input": "app/styles/main.sss",
-  "output": "build/main.css"
+  "output": "build/main.css",
+  "map": true
 };

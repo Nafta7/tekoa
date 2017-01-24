@@ -34,6 +34,7 @@
     "postcss-css-variables": "^0.6.0",
     "postcss-custom-media": "^5.0.1",
     "postcss-easy-import": "^2.0.0",
+    "postcss-hsb-color": "^1.0.2",
     "postcss-nesting": "^2.3.1",
     "sugarss": "^0.2.0",
     "watchify": "^3.8.0"
