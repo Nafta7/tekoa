@@ -76,14 +76,14 @@ class AppContainer extends Component {
       isPlayerVisible: false,
       results: [],
       vids: []
-    }, this.fetchQuery(this.state.query, this.state.contentType))
+    }, this.fetchQuery(this.state.query, this.state.selectedType))
   }
 
-  fetchQuery(query) {
-    getContent(query)
+  fetchQuery(query, type) {
+    getContent(query, type)
       .then(data => {
         this.setState({
-          results: this.state.results.concat(data.items)
+          results: this.state.results.concat(data)
         })
       })
   }
@@ -93,7 +93,7 @@ class AppContainer extends Component {
 
     this.setState({
       isPlayerVisible: true
-    }, this.fetchPlaylist(id[`${this.state.selectedType}Id`], this.state.selectedType))
+    }, this.fetchPlaylist(id, this.state.selectedType))
   }
 
   fetchPlaylist(id, type) {
