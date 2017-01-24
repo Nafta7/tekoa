@@ -3,6 +3,7 @@ import ContentType from '../constants/ContentType'
 
 const baseUrl = `https://www.googleapis.com/youtube/v3`
 
+
 function getContent(query, type) {
   const resource = 'search'
   const params = `part=snippet&key=${key}&type=${type}&maxResults=10`
@@ -10,7 +11,17 @@ function getContent(query, type) {
 
   return fetch(url)
     .then(res => res.json())
-    .then(data => data)
+    .then(data => {
+      const items = data.items.map(item => {
+        return {
+          id: item.id[`${type}Id`],
+          title: item.snippet.title,
+          thumbnails: item.snippet.thumbnails
+        }
+      })
+
+      return items
+    })
 }
 
 

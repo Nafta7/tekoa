@@ -4,7 +4,7 @@ import AppConstants from '../constants/AppConstants'
 let apiBridge = (function() {
   return (AppMode === AppConstants.DEV_MODE)
     ? require('../../test/helpers/apiFixture')
-    : require('../helpers/api')
+    : require('../api')
 })()
 
 module.exports = apiBridge
