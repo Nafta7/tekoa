@@ -2759,6 +2759,12 @@ postcss-easy-import@^2.0.0:
     postcss-import "^9.1.0"
     resolve "^1.1.7"
 
+postcss-hsb-color@^1.0.2:
+  version "1.0.2"
+  resolved "https://registry.yarnpkg.com/postcss-hsb-color/-/postcss-hsb-color-1.0.2.tgz#ab3cf36e7daf25e365622d63932d0226ac8eb3f4"
+  dependencies:
+    postcss "^5.2.8"
+
 postcss-import@^9.1.0:
   version "9.1.0"
   resolved "https://registry.yarnpkg.com/postcss-import/-/postcss-import-9.1.0.tgz#95fe9876a1e79af49fbdc3589f01fe5aa7cc1e80"
@@ -2780,7 +2786,7 @@ postcss-value-parser@^3.2.3:
   version "3.3.0"
   resolved "https://registry.yarnpkg.com/postcss-value-parser/-/postcss-value-parser-3.3.0.tgz#87f38f9f18f774a4ab4c8a232f5c5ce8872a9d15"
 
-postcss@^5.0.0, postcss@^5.0.14, postcss@^5.0.15, postcss@^5.0.19, postcss@^5.0.5, postcss@^5.2.4:
+postcss@^5.0.0, postcss@^5.0.14, postcss@^5.0.15, postcss@^5.0.19, postcss@^5.0.5, postcss@^5.2.4, postcss@^5.2.8:
   version "5.2.10"
   resolved "https://registry.yarnpkg.com/postcss/-/postcss-5.2.10.tgz#b58b64e04f66f838b7bc7cb41f7dac168568a945"
   dependencies:
