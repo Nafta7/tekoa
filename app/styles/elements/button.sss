@@ -1,0 +1,30 @@
+.button
+  border: none
+  background-color: var(--major-color)
+  color: var(--white)
+  border-color: var(--major-color-d)
+  border-width: 1px
+  border-style: solid
+  outline: 0
+  padding: 1em 2rem
+  transition: background-color 0.4s
+
+  &:hover
+    background-color: var(--major-color-d)
+    cursor: pointer
+
+.button-selection
+  background-color: var(--neutral-color)
+  border-color: var(--neutral-color-d)
+  border: none
+
+  &:hover
+    background-color: var(--accent-color-d)
+    border: none
+
+  &.active
+    background-color: var(--accent-color)
+    border: none
+
+.button-small
+  font-size: 0.9rem

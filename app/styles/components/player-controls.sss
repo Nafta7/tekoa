@@ -1,0 +1,24 @@
+.player-controls-container
+  position: absolute
+  bottom: 0
+  width: 100%
+  max-height: 13vh
+  background-color: var(--major-color)
+  border-top: 1px solid var(--major-color-d)
+
+.player-controls
+  list-style: none
+  display: flex
+  justify-content: center
+
+.control
+  padding: 0.5rem 2rem
+  font-size: 4em
+  color: var(--white)
+  background-color: transparent
+  border-width: 0
+  transition: background-color var(--base-transition-time)
+
+  &:hover
+    background-color: var(--major-color-d)
+    cursor: pointer

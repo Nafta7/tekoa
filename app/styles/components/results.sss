@@ -1,0 +1,37 @@
+.results
+  flex-basis: 60%
+  display: flex
+  flex-wrap: wrap
+  max-height: 68vh
+
+  & > *
+    width: 30.9%
+    margin-right: 1rem
+    margin-bottom: 1rem
+
+
+.results
+  padding-top: 1rem
+  padding-left: 1rem
+  opacity: 0
+  visibility: hidden
+  transition: opacity 0.4s
+  display: none
+
+
+.results.show
+  opacity: 1
+  visibility: visible
+  display: flex
+
+.content-item
+  background-color: var(--white)
+
+.content-item img
+  width: 100%
+
+.content-item-details
+  padding: 1rem
+
+.content-item-title
+  font-size: 1rem

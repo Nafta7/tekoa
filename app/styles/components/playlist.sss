@@ -1,0 +1,27 @@
+.playlist
+  flex: 1
+  flex-basis: 40%
+  list-style: none
+  padding: 0
+  margin: 0
+  display: flex
+  flex-flow: column
+  overflow-y: auto
+  max-height: 69vh
+
+  & > li
+    margin: 0
+    padding: 0.5em
+    background-color: var(--major-color)
+    color: var(--white)
+    flex: 0
+
+    &:nth-child(odd)
+      background-color: var(--major-color-l)
+
+    &:hover
+      background-color: var(--major-color-d)
+      cursor: pointer
+
+    &.active
+      background-color: var(--major-color-d)
