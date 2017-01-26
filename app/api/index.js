@@ -12,6 +12,7 @@ function getContent(query, type) {
   return fetch(url)
     .then(res => res.json())
     .then(data => {
+
       const items = data.items.map(item => {
         return {
           id: item.id[`${type}Id`],
@@ -20,7 +21,8 @@ function getContent(query, type) {
         }
       })
 
-      return items
+      const newData = Object.assign({}, data, {items})
+      return newData
     })
 }
 
