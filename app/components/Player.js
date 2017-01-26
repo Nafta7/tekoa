@@ -1,5 +1,5 @@
-const Player = ({ isVisible }) => {
-  const playerClasses = isVisible ? 'show' : ''
+const Player = ({ isMinimized }) => {
+  const playerClasses = isMinimized ? 'minimize' : ''
   return (
     <div class={`player ${playerClasses}`}>
       <div className={`player-container`}>

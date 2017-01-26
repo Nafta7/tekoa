@@ -1,24 +1,28 @@
 .player
-  display: none
-  flex-basis: 60%
-  flex-wrap: wrap
+  position: absolute
+  bottom: 13vh
+  min-height: 67vh
+  max-height: 67vh
+  width: 60%
 
+  &.minimize
+    bottom: 12vh
 
-.player.show
-  display: flex
-
+  &.minimize .player-container
+    transform: translate(-41%, 58%) scale(0.15)
 
 .player-container
-  position: relative
+  position: absolute
   padding-bottom: 56.25%
   width: 100%
   height: 100%
   overflow: hidden
+  transition: transform 0.3s cubic-bezier(0.4, 0, 1, 1)
+  z-index: 5
 
-
-.player-container iframe
-  position: absolute
-  top: 0
-  left: 0
-  width: 100%
-  height: 100%
+  & iframe
+    position: absolute
+    top: 0
+    left: 0
+    width: 100%
+    height: 100%

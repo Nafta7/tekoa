@@ -2,14 +2,21 @@
   position: absolute
   bottom: 0
   width: 100%
+  min-height: 13vh
   max-height: 13vh
   background-color: var(--major-color)
   border-top: 1px solid var(--major-color-d)
+
+.player-controls-list
+  display: flex
+  align-items: center
 
 .player-controls
   list-style: none
   display: flex
   justify-content: center
+  flex: 1
+  z-index: 3
 
 .control
   padding: 0.5rem 2rem
