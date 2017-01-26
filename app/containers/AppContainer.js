@@ -2,7 +2,8 @@ import Inferno from 'inferno'
 import Component from 'inferno-component'
 import SearchBar from '../components/SearchBar'
 import Player from '../components/Player'
-import Results from '../components/Results'
+import ChannelGrid from '../components/ChannelGrid'
+import PlaylistGrid from '../components/PlaylistGrid'
 import Playlist from '../components/Playlist'
 import PlayerControls from '../components/PlayerControls'
 import YoutubePlayer from 'youtube-player'
@@ -22,7 +23,7 @@ class AppContainer extends Component {
       currentItem: null,
       selectedType: ContentType.PLAYLIST,
       isPlaying: false,
-      isPlayerVisible: false
+      isPlayerMinimized: true
     }
 
     this.handleQueryChange = this.handleQueryChange.bind(this)
@@ -31,7 +32,11 @@ class AppContainer extends Component {
     this.handleVideoClick = this.handleVideoClick.bind(this)
     this.handleNextVideo = this.handleNextVideo.bind(this)
     this.handlePreviousVideo = this.handlePreviousVideo.bind(this)
+    // TODO
+    // rename handleTogle
     this.handleToggle = this.handleToggle.bind(this)
+
+    this.handleTogglePlayer = this.handleTogglePlayer.bind(this)
     this.handleContentTypeChange = this.handleContentTypeChange.bind(this)
   }
 
@@ -66,14 +71,14 @@ class AppContainer extends Component {
 
   handleContentTypeChange(type) {
     this.setState({
-      selectedType: type
+      selectedType: type,
+      results: []
     })
   }
 
   handleSubmit(e) {
     e.preventDefault()
     this.setState({
-      isPlayerVisible: false,
       results: [],
       vids: []
     }, this.fetchQuery(this.state.query, this.state.selectedType))
@@ -83,7 +88,7 @@ class AppContainer extends Component {
     getContent(query, type)
       .then(data => {
         this.setState({
-          results: this.state.results.concat(data)
+          results: data.items
         })
       })
   }
@@ -142,6 +147,11 @@ class AppContainer extends Component {
     }, () => this.loadVideo(this.state.vids[nextItem].videoId))
   }
 
+  handleTogglePlayer() {
+    this.setState({
+      isPlayerMinimized: !this.state.isPlayerMinimized
+    })
+  }
 
   loadVideo(id){
     this.state.player.loadVideoById(id)
@@ -158,12 +168,23 @@ class AppContainer extends Component {
         />
 
         <div class="main">
-          <Results
-            items={this.state.results}
-            onItemClick={this.handleItemClick}
-            isVisible={!this.state.isPlayerVisible}
-          />
-          <Player isVisible={this.state.isPlayerVisible} />
+          {
+            (this.state.selectedType === ContentType.CHANNEL)
+            ? <ChannelGrid
+                items={this.state.results}
+                isVisible={!this.state.isPlayerMinimized}
+                onItemClick={this.handleItemClick}
+
+              />
+            : <PlaylistGrid
+                items={this.state.results}
+                isVisible={this.state.isPlayerMinimized}
+                onItemClick={this.handleItemClick}
+              />
+          }
+
+          <Player isMinimized={this.state.isPlayerMinimized} />
+
           <Playlist
             vids={this.state.vids}
             onVideoClick={this.handleVideoClick}
@@ -175,8 +196,11 @@ class AppContainer extends Component {
           onNext={this.handleNextVideo}
           onPrevious={this.handlePreviousVideo}
           onToggle={this.handleToggle}
+          onTogglePlayer={this.handleTogglePlayer}
+          isPlayerMinimized={this.state.isPlayerMinimized}
           isPlaying={this.state.isPlaying}
         />
+
       </div>
     )
   }
