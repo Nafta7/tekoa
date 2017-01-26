@@ -4,3 +4,4 @@ node_modules/
 images/
 bundle.js
 disc.html
+npm-debug.log
