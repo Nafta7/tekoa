@@ -1,7 +1,7 @@
 import Inferno from 'inferno'
 import ChannelItem from './ChannelItem'
 
-const ChannelGrid = ({ items, onItemClick }) => {
+const ChannelGrid = ({ items, onItemClick, onPlaylistsClick }) => {
   const gridVisibility = 'show'
   return (
     <div class={`content-main ${gridVisibility} flat-scroll`}>
@@ -12,6 +12,7 @@ const ChannelGrid = ({ items, onItemClick }) => {
               title={item.title}
               thumbnails={item.thumbnails}
               onClick={onItemClick}
+              onPlaylistsClick={onPlaylistsClick}
             />
           )
         })}

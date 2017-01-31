@@ -9,7 +9,12 @@ function getPlaylist() {
   return Promise.resolve(videos)
 }
 
+function getPlaylistsByChannel() {
+  return Promise.resolve(channels)
+}
+
 export {
   getContent,
-  getPlaylist
+  getPlaylist,
+  getPlaylistsByChannel
 }

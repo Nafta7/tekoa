@@ -1,6 +1,9 @@
 import Inferno from 'inferno'
+import ContentType from '../constants/ContentType'
 
-const PlaylistItem = ({ id, title, thumbnails, onClick }) => {
+const PlaylistItem = ({ id, channelId, title, thumbnails,
+  onClick, onPlaylistsClick, viewType
+}) => {
   let maxLength = 20
   title = title.length > maxLength
     ? title.substring(0, 20).concat('...')
@@ -13,7 +16,17 @@ const PlaylistItem = ({ id, title, thumbnails, onClick }) => {
         </a>
         <div class='content-item-details'>
           <h2 class='content-item-title'> {title} </h2>
-          
+          {
+            (viewType === ContentType.PLAYLIST)
+              ? <button class='button button-small'
+                onClick={onPlaylistsClick.bind(null, channelId, ContentType.CHANNEL)}
+              >
+                Channel playlists
+              </button>
+              : <span></span>
+
+          }
+
         </div>
       </div>
 

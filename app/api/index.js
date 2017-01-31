@@ -3,7 +3,6 @@ import ContentType from '../constants/ContentType'
 
 const baseUrl = `https://www.googleapis.com/youtube/v3`
 
-
 function getContent(query, type) {
   const resource = 'search'
   const params = `part=snippet&key=${key}&type=${type}&maxResults=10`
@@ -12,15 +11,39 @@ function getContent(query, type) {
   return fetch(url)
     .then(res => res.json())
     .then(data => {
-
       const items = data.items.map(item => {
         return {
           id: item.id[`${type}Id`],
           title: item.snippet.title,
-          thumbnails: item.snippet.thumbnails
+          thumbnails: item.snippet.thumbnails,
+          channelId: item.snippet.channelId,
+          channelTitle: item.snippet.channelTitle
         }
       })
 
+      const newData = Object.assign({}, data, {items})
+      return newData
+    })
+}
+
+function getPlaylistsByChannel(channelId) {
+  const resource = 'playlists'
+  const params = `part=snippet&key=${key}&maxResults=10`
+  let url = `${baseUrl}/${resource}?${params}&channelId=${channelId}`
+
+  return fetch(url)
+    .then(res => res.json())
+    .then(data => {
+      const items = data.items.map(item => {
+        return {
+          id: item.id,
+          title: item.snippet.title,
+          description: item.snippet.description,
+          thumbnails: item.snippet.thumbnails,
+          channelTitle: item.snippet.channelTitle,
+          channelId: item.snippet.channelId
+        }
+      })
       const newData = Object.assign({}, data, {items})
       return newData
     })
@@ -80,5 +103,6 @@ function getChannelPlaylist(id) {
 
 export {
   getPlaylist,
-  getContent
+  getContent,
+  getPlaylistsByChannel
 }

@@ -11,6 +11,7 @@ import PlayerState from '../constants/PlayerState'
 import ContentType from '../constants/ContentType'
 const getContent = require('../helpers/apiBridge').getContent
 const getPlaylist =  require('../helpers/apiBridge').getPlaylist
+const getPlaylistsByChannel = require('../helpers/apiBridge').getPlaylistsByChannel
 
 class AppContainer extends Component {
   constructor(props) {
@@ -22,6 +23,7 @@ class AppContainer extends Component {
       results: [],
       currentItem: null,
       selectedType: ContentType.PLAYLIST,
+      viewType: ContentType.PLAYLIST,
       isPlaying: false,
       isPlayerMinimized: true
     }
@@ -38,6 +40,8 @@ class AppContainer extends Component {
 
     this.handleTogglePlayer = this.handleTogglePlayer.bind(this)
     this.handleContentTypeChange = this.handleContentTypeChange.bind(this)
+    this.handlePlaylistsClick = this.handlePlaylistsClick.bind(this)
+
   }
 
   componentDidMount() {
@@ -80,7 +84,6 @@ class AppContainer extends Component {
     e.preventDefault()
     this.setState({
       results: [],
-      vids: []
     }, this.fetchQuery(this.state.query, this.state.selectedType))
   }
 
@@ -88,7 +91,8 @@ class AppContainer extends Component {
     getContent(query, type)
       .then(data => {
         this.setState({
-          results: data.items
+          results: data.items,
+          viewType: type
         })
       })
   }
@@ -96,16 +100,22 @@ class AppContainer extends Component {
   handleItemClick(e, id) {
     e.preventDefault()
 
-    this.setState({
-      isPlayerVisible: true
-    }, this.fetchPlaylist(id, this.state.selectedType))
+    this.fetchPlaylist(id, this.state.selectedType)
+      .then(() => {
+        if (!this.state.vids.length > 0) return
+
+        this.setState({
+          currentItem: 0,
+          isPlaying: true
+        }, this.loadVideo(this.state.vids[0].videoId))
+      })
   }
 
   fetchPlaylist(id, type) {
-    getPlaylist(id, type)
+    return getPlaylist(id, type)
       .then(data => {
         this.setState({
-          vids: this.state.vids.concat(data.items)
+          vids: data.items
         })
       })
   }
@@ -153,6 +163,19 @@ class AppContainer extends Component {
     })
   }
 
+  handlePlaylistsClick(id, viewType) {
+    getPlaylistsByChannel(id)
+      .then(data => {
+        let newState = {
+          results: data.items,
+          selectedType: ContentType.PLAYLIST,
+        }
+        if (viewType) newState = Object.assign({}, newState, {viewType})
+        this.setState(newState)
+      })
+      .catch(err => console.log('Error: ', err))
+  }
+
   loadVideo(id){
     this.state.player.loadVideoById(id)
   }
@@ -174,12 +197,14 @@ class AppContainer extends Component {
                 items={this.state.results}
                 isVisible={!this.state.isPlayerMinimized}
                 onItemClick={this.handleItemClick}
-
+                onPlaylistsClick={this.handlePlaylistsClick}
               />
             : <PlaylistGrid
                 items={this.state.results}
                 isVisible={this.state.isPlayerMinimized}
                 onItemClick={this.handleItemClick}
+                onPlaylistsClick={this.handlePlaylistsClick}
+                viewType={this.state.viewType}
               />
           }
 
