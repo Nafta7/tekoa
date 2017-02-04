@@ -1,8 +1,9 @@
 import Inferno from 'inferno'
 
-const Playlist = ({ vids, currentItem, onVideoClick }) => {
+const Playlist = ({ vids, currentItem, isVisible, onVideoClick }) => {
+  const playlistVisibility = isVisible ? 'show' : ''
   return (
-    <ul class='playlist flat-scroll'>
+    <ul class={`playlist flat-scroll ${playlistVisibility}`}>
       {vids.map((vid, index) => {
         let isActive = currentItem === index
         return (

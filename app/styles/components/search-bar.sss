@@ -1,11 +1,30 @@
+.nav
+  display: flex
+  flex-direction: column
+  margin-top: 1rem
+  padding: 0 1rem
+
 .menu-bar
   display: flex
 
-
   & > *
-  flex: 1
+    flex: auto
 
-.content-type-container
+.logo
+  align-self: center
+  padding: 0 1rem
+  & .full
+    display: none
+
+  @media (--small-viewport)
+    & .full
+      display: inline-block
+    & .mini
+      display: none
+
+.content-type-selection
   display: flex
+  justify-content: flex-start
+  padding-left: 1rem
   margin-top: 1rem
-  width: 100%
+  margin-bottom: 1rem

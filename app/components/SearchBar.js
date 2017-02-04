@@ -10,25 +10,26 @@ const SearchBar = ({ onInput, onSubmit, onContentTypeClick, selectedType }) => {
   else if (selectedType === ContentType.CHANNEL) btnChannelClasses.push('active')
 
   return (
-    <div class='header'>
+    <div class='nav'>
       <form className='menu-bar' onSubmit={onSubmit}>
+        <h1 class='logo'>
+          <span class='mini'>t</span><span class='full'>tekoa</span>
+        </h1>
+
         <input className='input' type='text'
           placeholder={`Type a ${selectedType} name`}
           onInput={onInput}
         />
         <button class='button' type='submit'>Search</button>
       </form>
-      <div class='content-type-container '>
+      <div class='content-type-selection'>
         <button type='button' class={btnPlaylistClasses.join(' ')}
-          onClick={onContentTypeClick.bind(null, ContentType.PLAYLIST)}
-        >
+          onClick={onContentTypeClick.bind(null, ContentType.PLAYLIST)}>
           Playlist
         </button>
 
-
         <button type='button' class={btnChannelClasses.join(' ')}
-          onClick={onContentTypeClick.bind(null, ContentType.CHANNEL)}
-        >
+          onClick={onContentTypeClick.bind(null, ContentType.CHANNEL)}>
           Channel
         </button>
       </div>

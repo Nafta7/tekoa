@@ -1,13 +1,26 @@
 .playlist
   flex: 1
-  flex-basis: 40%
+  font-size: 0.9em
+  flex-basis: 100%
   list-style: none
   padding: 0
   margin: 0
   display: flex
   flex-flow: column
   overflow-y: auto
-  max-height: 69vh
+  max-height: 67vh
+  z-index: 5
+
+  @media (--small-only-viewport)
+    transition: all 0.7s
+    opacity: 0
+
+    &.show
+      transform: translateY(-100%)
+      opacity: 1
+
+  @media (--small-viewport)
+    flex-basis: 35%
 
   & > li
     margin: 0

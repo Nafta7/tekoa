@@ -1,4 +1,6 @@
 .player-controls-container
+  display: flex
+  justify-content: space-between
   position: absolute
   bottom: 0
   width: 100%
@@ -6,26 +8,43 @@
   max-height: 13vh
   background-color: var(--major-color)
   border-top: 1px solid var(--major-color-d)
+  z-index: 6
 
 .player-controls-list
   display: flex
   align-items: center
+  width: 100%
 
 .player-controls
   list-style: none
   display: flex
   justify-content: center
   flex: 1
-  z-index: 3
+  height: 100%
 
 .control
+  height: 100%
   padding: 0.5rem 2rem
-  font-size: 4em
+  font-size: 2em
   color: var(--white)
   background-color: transparent
   border-width: 0
+  outline: 0
   transition: background-color var(--base-transition-time)
 
   &:hover
     background-color: var(--major-color-d)
     cursor: pointer
+
+.control-toggle
+  transition: transform 0.3s
+  display: block
+
+  &.flip
+    transform: rotate(180deg)
+
+  &:hover
+    cursor: pointer
+
+.player-toggle
+  height: 100%

@@ -1,9 +1,9 @@
 const PlayerControls = ({
-  onNext, onPrevious, onToggle, onTogglePlayer,
-  isPlaying, isPlayerMinimized
+  onNext, onPrevious, onToggle, isPlaying, isPlayerMinimized, onTogglePlayer
 }) => {
   const play = isPlaying ? '⏸' : '⏵'
-  const togglePlayer = isPlayerMinimized ? '⏶' : '⏷'
+  const togglePlayer = '⏶'
+  const toggleVisibility = isPlayerMinimized ? '' : 'flip'
   return (
     <div class='player-controls-container'>
       <ul class='player-controls-list'>
@@ -21,11 +21,15 @@ const PlayerControls = ({
           </li>
         </ul>
 
-        <div>
-          <button class='control' onClick={onTogglePlayer}>
-            {togglePlayer}
+        <div class='player-toggle'>
+          <button class={`control`}
+            onClick={onTogglePlayer}>
+            <label class={`control-toggle ${toggleVisibility}`}>
+              {togglePlayer}
+            </label>
           </button>
         </div>
+
       </ul>
     </div>
   )
