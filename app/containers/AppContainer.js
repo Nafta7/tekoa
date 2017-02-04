@@ -25,6 +25,7 @@ class AppContainer extends Component {
       selectedType: ContentType.PLAYLIST,
       viewType: ContentType.PLAYLIST,
       isPlaying: false,
+      isPlaylistVisible: false,
       isPlayerMinimized: true
     }
 
@@ -84,6 +85,8 @@ class AppContainer extends Component {
     e.preventDefault()
     this.setState({
       results: [],
+      isPlaylistVisible: false,
+      isPlayerMinimized: true
     }, this.fetchQuery(this.state.query, this.state.selectedType))
   }
 
@@ -106,7 +109,8 @@ class AppContainer extends Component {
 
         this.setState({
           currentItem: 0,
-          isPlaying: true
+          isPlaying: true,
+          isPlaylistVisible: true
         }, this.loadVideo(this.state.vids[0].videoId))
       })
   }
@@ -195,25 +199,28 @@ class AppContainer extends Component {
             (this.state.selectedType === ContentType.CHANNEL)
             ? <ChannelGrid
                 items={this.state.results}
-                isVisible={!this.state.isPlayerMinimized}
                 onItemClick={this.handleItemClick}
                 onPlaylistsClick={this.handlePlaylistsClick}
+
               />
             : <PlaylistGrid
                 items={this.state.results}
-                isVisible={this.state.isPlayerMinimized}
                 onItemClick={this.handleItemClick}
                 onPlaylistsClick={this.handlePlaylistsClick}
                 viewType={this.state.viewType}
               />
           }
 
-          <Player isMinimized={this.state.isPlayerMinimized} />
+          <Player
+            isMinimized={this.state.isPlayerMinimized}
+
+          />
 
           <Playlist
             vids={this.state.vids}
             onVideoClick={this.handleVideoClick}
             currentItem={this.state.currentItem}
+            isVisible={this.state.isPlaylistVisible}
           />
         </div>
 
@@ -221,9 +228,9 @@ class AppContainer extends Component {
           onNext={this.handleNextVideo}
           onPrevious={this.handlePreviousVideo}
           onToggle={this.handleToggle}
-          onTogglePlayer={this.handleTogglePlayer}
           isPlayerMinimized={this.state.isPlayerMinimized}
           isPlaying={this.state.isPlaying}
+          onTogglePlayer={this.handleTogglePlayer}
         />
 
       </div>
