@@ -2782,11 +2782,17 @@ postcss-nesting@^2.3.1:
   dependencies:
     postcss "^5.0.19"
 
+postcss-responsive-font@^1.0.0:
+  version "1.0.0"
+  resolved "https://registry.yarnpkg.com/postcss-responsive-font/-/postcss-responsive-font-1.0.0.tgz#61deba0d59cc89beacef25e62fe8f0fd0068de47"
+  dependencies:
+    postcss "^5.2.5"
+
 postcss-value-parser@^3.2.3:
   version "3.3.0"
   resolved "https://registry.yarnpkg.com/postcss-value-parser/-/postcss-value-parser-3.3.0.tgz#87f38f9f18f774a4ab4c8a232f5c5ce8872a9d15"
 
-postcss@^5.0.0, postcss@^5.0.14, postcss@^5.0.15, postcss@^5.0.19, postcss@^5.0.5, postcss@^5.2.4, postcss@^5.2.8:
+postcss@^5.0.0, postcss@^5.0.14, postcss@^5.0.15, postcss@^5.0.19, postcss@^5.0.5, postcss@^5.2.4, postcss@^5.2.5, postcss@^5.2.8:
   version "5.2.10"
   resolved "https://registry.yarnpkg.com/postcss/-/postcss-5.2.10.tgz#b58b64e04f66f838b7bc7cb41f7dac168568a945"
   dependencies:
