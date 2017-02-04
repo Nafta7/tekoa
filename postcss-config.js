@@ -4,6 +4,7 @@ module.exports = {
     "postcss-nesting",
     "postcss-hsb-color",
     "postcss-css-variables",
+    "postcss-responsive-font",
     "css-mqpacker",
     "postcss-custom-media"
   ],
