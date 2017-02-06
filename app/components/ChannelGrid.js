@@ -1,10 +1,13 @@
 import Inferno from 'inferno'
 import ChannelItem from './ChannelItem'
 
-const ChannelGrid = ({ items, onItemClick, onPlaylistsClick }) => {
+const ChannelGrid = ({ items, hasMoreResults,
+  onItemClick, onPlaylistsClick, onLoadMore
+}) => {
   const gridVisibility = 'show'
   return (
-    <div class={`content-main ${gridVisibility} flat-scroll`}>
+    <div class={`main flat-scroll`}>
+      <div class={`content`}>
         {items.map(item => {
           return (
             <ChannelItem
@@ -16,6 +19,11 @@ const ChannelGrid = ({ items, onItemClick, onPlaylistsClick }) => {
             />
           )
         })}
+      </div>
+      <div class='align-center'>
+        <button class='button' disabled={!hasMoreResults()}
+          onClick={onLoadMore}>Load more</button>
+      </div>
     </div>
   )
 }

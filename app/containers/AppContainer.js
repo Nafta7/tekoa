@@ -1,5 +1,6 @@
 import Inferno from 'inferno'
 import Component from 'inferno-component'
+
 import SearchBar from '../components/SearchBar'
 import Player from '../components/Player'
 import ChannelGrid from '../components/ChannelGrid'
@@ -7,11 +8,14 @@ import PlaylistGrid from '../components/PlaylistGrid'
 import Playlist from '../components/Playlist'
 import PlayerControls from '../components/PlayerControls'
 import YoutubePlayer from 'youtube-player'
+
 import PlayerState from '../constants/PlayerState'
 import ContentType from '../constants/ContentType'
-const getContent = require('../helpers/apiBridge').getContent
-const getPlaylist =  require('../helpers/apiBridge').getPlaylist
-const getPlaylistsByChannel = require('../helpers/apiBridge').getPlaylistsByChannel
+import SearchType from '../constants/SearchType'
+
+import {
+  getContent, getPlaylist, getPlaylistsByChannel
+} from '../helpers/apiBridge'
 
 class AppContainer extends Component {
   constructor(props) {
@@ -21,12 +25,15 @@ class AppContainer extends Component {
       query: "",
       vids: [],
       results: [],
+      resultsPageToken: '',
       currentItem: null,
+      selectedChannelId: null,
       selectedType: ContentType.PLAYLIST,
       viewType: ContentType.PLAYLIST,
+      searchType: SearchType.BY_CONTENT,
       isPlaying: false,
       isPlaylistVisible: false,
-      isPlayerMinimized: true
+      isPlayerMinimized: true,
     }
 
     this.handleQueryChange = this.handleQueryChange.bind(this)
@@ -42,7 +49,8 @@ class AppContainer extends Component {
     this.handleTogglePlayer = this.handleTogglePlayer.bind(this)
     this.handleContentTypeChange = this.handleContentTypeChange.bind(this)
     this.handlePlaylistsClick = this.handlePlaylistsClick.bind(this)
-
+    this.handleLoadMore = this.handleLoadMore.bind(this)
+    this.hasMoreResults = this.hasMoreResults.bind(this)
   }
 
   componentDidMount() {
@@ -66,38 +74,95 @@ class AppContainer extends Component {
     })
   }
 
+  hasMoreResults() {
+    return Boolean(this.state.resultsPageToken)
+  }
+
   handleQueryChange(e) {
     this.setState({
       query: e.target.value
-    }, () => {
-
     })
   }
 
   handleContentTypeChange(type) {
     this.setState({
+      results: [],
+      resultsPageToken: '',
       selectedType: type,
-      results: []
+      selectedChannelId: null
     })
   }
 
   handleSubmit(e) {
     e.preventDefault()
+
+    if (this.state.query === '') return
+
     this.setState({
       results: [],
+      resultsPageToken: '',
+      searchType: SearchType.BY_CONTENT,
       isPlaylistVisible: false,
-      isPlayerMinimized: true
-    }, this.fetchQuery(this.state.query, this.state.selectedType))
+      isPlayerMinimized: true,
+      selectedChannelId: null
+    }, () => {
+      this.fetchQuery(
+        this.state.query,
+        this.state.selectedType,
+        this.state.resultsPageToken
+      )
+    })
   }
 
-  fetchQuery(query, type) {
-    getContent(query, type)
+  handlePlaylistsClick(id, viewType) {
+    this.setState({
+      searchType: SearchType.BY_CHANNEL,
+      results: [],
+      resultsPageToken: '',
+    }, () => this.fetchPlaylists(id, viewType))
+  }
+
+  fetchPlaylists(id, viewType) {
+    getPlaylistsByChannel(id, this.state.resultsPageToken)
+      .then(data => {
+        let newState = {
+          results: this.state.results.concat(data.items),
+          resultsPageToken: data.nextPageToken,
+          selectedType: ContentType.PLAYLIST,
+          selectedChannelId: id
+        }
+        if (viewType) newState = Object.assign({}, newState, {viewType})
+        this.setState(newState)
+      })
+      .catch(err => console.log('Error: ', err))
+  }
+
+  handleLoadMore(e) {
+    switch (this.state.searchType) {
+      case SearchType.BY_CONTENT:
+        this.fetchQuery(
+          this.state.query,
+          this.state.selectedType,
+          this.state.resultsPageToken
+        )
+        break
+      case SearchType.BY_CHANNEL:
+        this.fetchPlaylists(this.state.selectedChannelId, ContentType.CHANNEL)
+      default:
+        break
+    }
+  }
+
+  fetchQuery(query, type, nextPageToken) {
+    getContent(query, type, nextPageToken)
       .then(data => {
         this.setState({
-          results: data.items,
-          viewType: type
+          results: this.state.results.concat(data.items),
+          viewType: type,
+          resultsPageToken: data.nextPageToken
         })
       })
+      .catch(err => console.log('Error: ', err))
   }
 
   handleItemClick(e, id) {
@@ -113,6 +178,7 @@ class AppContainer extends Component {
           isPlaylistVisible: true
         }, this.loadVideo(this.state.vids[0].videoId))
       })
+      .catch(err => console.log('Error: ', err))
   }
 
   fetchPlaylist(id, type) {
@@ -167,19 +233,6 @@ class AppContainer extends Component {
     })
   }
 
-  handlePlaylistsClick(id, viewType) {
-    getPlaylistsByChannel(id)
-      .then(data => {
-        let newState = {
-          results: data.items,
-          selectedType: ContentType.PLAYLIST,
-        }
-        if (viewType) newState = Object.assign({}, newState, {viewType})
-        this.setState(newState)
-      })
-      .catch(err => console.log('Error: ', err))
-  }
-
   loadVideo(id){
     this.state.player.loadVideoById(id)
   }
@@ -194,27 +247,27 @@ class AppContainer extends Component {
           selectedType={this.state.selectedType}
         />
 
-        <div class="main">
+        <div class="central">
           {
             (this.state.selectedType === ContentType.CHANNEL)
             ? <ChannelGrid
                 items={this.state.results}
+                hasMoreResults={this.hasMoreResults}
                 onItemClick={this.handleItemClick}
                 onPlaylistsClick={this.handlePlaylistsClick}
+                onLoadMore={this.handleLoadMore}
+
 
               />
             : <PlaylistGrid
                 items={this.state.results}
+                viewType={this.state.viewType}
+                hasMoreResults={this.hasMoreResults}
                 onItemClick={this.handleItemClick}
                 onPlaylistsClick={this.handlePlaylistsClick}
-                viewType={this.state.viewType}
+                onLoadMore={this.handleLoadMore}
               />
           }
-
-          <Player
-            isMinimized={this.state.isPlayerMinimized}
-
-          />
 
           <Playlist
             vids={this.state.vids}
@@ -223,6 +276,10 @@ class AppContainer extends Component {
             isVisible={this.state.isPlaylistVisible}
           />
         </div>
+
+        <Player
+          isMinimized={this.state.isPlayerMinimized}
+        />
 
         <PlayerControls
           onNext={this.handleNextVideo}

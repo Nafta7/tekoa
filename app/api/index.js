@@ -1,12 +1,18 @@
 const key = require('../../credentials').key
 import ContentType from '../constants/ContentType'
+import AppConstants from '../constants/AppConstants'
 
 const baseUrl = `https://www.googleapis.com/youtube/v3`
 
-function getContent(query, type) {
+function getContent(query, type, pageToken = '') {
   const resource = 'search'
-  const params = `part=snippet&key=${key}&type=${type}&maxResults=10`
+  let params = `part=snippet&key=${key}&type=${type}`
+  params += `&maxResults=${AppConstants.MAX_RESULTS}`
   let url = `${baseUrl}/${resource}?${params}&q=${query}`
+
+  if (pageToken !== '') {
+    url += `&pageToken=${pageToken}`
+  }
 
   return fetch(url)
     .then(res => res.json())
@@ -26,10 +32,15 @@ function getContent(query, type) {
     })
 }
 
-function getPlaylistsByChannel(channelId) {
+function getPlaylistsByChannel(channelId, pageToken = '') {
   const resource = 'playlists'
-  const params = `part=snippet&key=${key}&maxResults=10`
+  let params = `part=snippet&key=${key}`
+  params += `&maxResults=${AppConstants.MAX_RESULTS}`
   let url = `${baseUrl}/${resource}?${params}&channelId=${channelId}`
+
+  if (pageToken !== '') {
+    url += `&pageToken=${pageToken}`
+  }
 
   return fetch(url)
     .then(res => res.json())
@@ -49,13 +60,10 @@ function getPlaylistsByChannel(channelId) {
     })
 }
 
-
 function getPlaylist(id, type) {
   const resource = 'playlistItems'
   const paramKey = `key=${key}`
   const part = `part=snippet`
-  // const fields = `items(id, snippet), nextPageToken, pageInfo`
-  // const params = `fields=${fields}&maxResults=10&order=date`
   const params = `${part}&maxResults=20&order=date&${paramKey}`
 
   let url = `${baseUrl}/${resource}?${params}&playlistId=`

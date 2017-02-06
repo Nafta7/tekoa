@@ -1,34 +1,30 @@
-.content-main
+.main
   flex-basis: 100%
-  display: flex
-  flex-wrap: wrap
-  max-height: 67vh
-  min-height: 67vh
-
-
+  max-width: 100%
   padding-left: 1rem
-  opacity: 0
-  visibility: hidden
+  padding-bottom: 1rem
   transition: all 0.4s
-  display: none
   z-index: 4
-
-  & > *
-    margin-right: 0.5rem
-    margin-bottom: 0.5rem
+  max-height: 69vh
+  min-height: 69vh
 
   @media (--small-viewport)
     flex-basis: 65%
+    max-width: 65%
 
-
-    & > *
-      width: 32%
-
-
-.content-main.show
-  opacity: 1
-  visibility: visible
+.content
   display: flex
+  flex-wrap: wrap
+  align-items: center
+  justify-content: flex-start
+
+.content-item
+  margin-right: 0.5rem
+  margin-bottom: 0.5rem
+
+  @media (--small-viewport)
+    width: 32%
+
 
 .content-item
   background-color: var(--white)
