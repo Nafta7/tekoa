@@ -64,25 +64,37 @@ function getPlaylist(id, type) {
   const resource = 'playlistItems'
   const paramKey = `key=${key}`
   const part = `part=snippet`
-  const params = `${part}&maxResults=20&order=date&${paramKey}`
+  const params = `${part}&maxResults=50&order=date&${paramKey}`
 
-  let url = `${baseUrl}/${resource}?${params}&playlistId=`
+  let url = `${baseUrl}/${resource}?${params}`
 
   if (type === ContentType.CHANNEL) {
     return getChannelPlaylist(id)
       .then(uploadsId => {
-        return fetchPlaylistVideos(url + uploadsId)
+        return getPlaylistItems(`${url}&playlistId=${uploadsId}`)
       })
   } else {
-    return fetchPlaylistVideos(url + id)
+    return getPlaylistItems(`${url}&playlistId=${id}`)
   }
 }
 
-function fetchPlaylistVideos(url) {
-  return fetch(url)
+function getPlaylistItems(url) {
+  return fetchPlaylistItems(url)
+}
+
+/*
+  Recursive function that fetches all the PlaylistItems.
+*/
+function fetchPlaylistItems(url, results = [], nextPageToken) {
+  let newUrl = (nextPageToken)
+    ? `${url}&pageToken=${nextPageToken}`
+    : url
+
+  return fetch(newUrl)
     .then(res => res.json())
     .then(data => {
-      var items = data.items.map(item => {
+
+      let items = data.items.map(item => {
         return {
           title: item.snippet.title,
           videoId: item.snippet.resourceId.videoId,
@@ -90,13 +102,19 @@ function fetchPlaylistVideos(url) {
         }
       })
 
-      const newData = Object.assign({}, data, {items})
-      return newData
+      results = results.concat(items)
+
+      if (data.nextPageToken) {
+        return fetchPlaylistItems(url, results, data.nextPageToken)
+      } else {
+        const newData = Object.assign({}, data, {items: results})
+        return newData
+      }
     })
 }
 
 /* The list of videos/uploads from a channel is treated as
-   a plalist, so we have to get this id to hand it
+   a Playlist, so we have to get this id to hand it
    to the playlistItems resource.
 */
 function getChannelPlaylist(id) {
