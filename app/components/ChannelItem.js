@@ -14,7 +14,7 @@ const ChannelItem = ({ id, title, thumbnails, onClick, onPlaylistsClick }) => {
         </a>
         <div class='content-item-details'>
           <h2 class='content-item-title'> {title} </h2>
-          <button class='button button-small'
+          <button class='button major small'
             onClick={onPlaylistsClick.bind(null, id, ContentType.CHANNEL)}
           >
             Playlists

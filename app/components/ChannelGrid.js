@@ -21,7 +21,7 @@ const ChannelGrid = ({ items, hasMoreResults,
         })}
       </div>
       <div class='align-center'>
-        <button class='button' disabled={!hasMoreResults()}
+        <button class='button minor' disabled={!hasMoreResults()}
           onClick={onLoadMore}>Load more</button>
       </div>
     </div>

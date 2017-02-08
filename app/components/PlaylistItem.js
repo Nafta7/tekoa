@@ -18,7 +18,7 @@ const PlaylistItem = ({ id, channelId, title, thumbnails,
           <h2 class='content-item-title'> {title} </h2>
           {
             (viewType === ContentType.PLAYLIST)
-              ? <button class='button button-small'
+              ? <button class='button major small'
                 onClick={onPlaylistsClick.bind(null, channelId, ContentType.CHANNEL)}
               >
                 Channel playlists
