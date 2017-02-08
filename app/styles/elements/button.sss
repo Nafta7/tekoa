@@ -1,33 +1,38 @@
 .button
   border: none
-  background-color: var(--major-color)
   color: var(--white)
-  border-color: var(--major-color-d)
-  border-width: 1px
-  border-style: solid
+  font-size: 1em
   outline: 0
-  padding: 1em 2rem
+  padding: 0.6rem 1rem
   transition: background-color 0.4s
 
+
   &:hover
-    background-color: var(--major-color-d)
     cursor: pointer
 
   &[disabled]
     display: none
 
-.button-selection
-  background-color: var(--neutral-color)
-  border-color: var(--neutral-color-d)
-  border: none
+  &.major
+    background-color: var(--major-color)
 
-  &:hover
-    background-color: var(--accent-color-d)
-    border: none
+    &:hover
+      background-color: var(--major-color-l)
 
-  &.active
-    background-color: var(--accent-color)
-    border: none
+  &.minor
+    background-color: var(--minor-color)
 
-.button-small
-  font-size: 0.9rem
+    &:hover
+      background-color: var(--minor-color-l)
+
+  &.selection
+    background-color: var(--neutral-color)
+
+    &:hover
+      background-color: var(--accent-color-l)
+
+    &.active
+      background-color: var(--accent-color)
+
+  &.small
+    font-size: 0.7em
