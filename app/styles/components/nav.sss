@@ -1,0 +1,24 @@
+.nav
+  display: flex
+  justify-content: space-between
+  align-items: center
+
+.logo
+  flex: 0.2 0 auto
+  align-self: center
+  color: var(--white)
+  padding: 0 1rem
+
+  & .full
+    display: none
+
+  @media (--small-viewport)
+    & .full
+      display: inline-block
+    & .mini
+      display: none
+
+.settings
+  flex: 1 0 auto
+  display: flex
+  justify-content: flex-end
