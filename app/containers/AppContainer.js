@@ -1,5 +1,6 @@
 import Inferno from 'inferno'
 import Component from 'inferno-component'
+import YoutubePlayer from 'youtube-player'
 
 import SearchBar from '../components/SearchBar'
 import Player from '../components/Player'
@@ -7,7 +8,8 @@ import ChannelGrid from '../components/ChannelGrid'
 import PlaylistGrid from '../components/PlaylistGrid'
 import Playlist from '../components/Playlist'
 import PlayerControls from '../components/PlayerControls'
-import YoutubePlayer from 'youtube-player'
+import Nav from '../components/Nav'
+import ContentTypeSelection from '../components/ContentTypeSelection'
 
 import PlayerState from '../constants/PlayerState'
 import ContentType from '../constants/ContentType'
@@ -240,12 +242,19 @@ class AppContainer extends Component {
   render() {
     return (
       <div>
-        <SearchBar
-          onInput={this.handleQueryChange}
-          onSubmit={this.handleSubmit}
-          onContentTypeClick={this.handleContentTypeChange}
-          selectedType={this.state.selectedType}
-        />
+        <header class='header'>
+          <Nav>
+            <SearchBar
+              selectedType={this.state.selectedType}
+              onInput={this.handleQueryChange}
+              onSubmit={this.handleSubmit}
+            />
+          </Nav>
+          <ContentTypeSelection
+            onContentTypeClick={this.handleContentTypeChange}
+            selectedType={this.state.selectedType}
+          />
+        </header>
 
         <div class="central">
           {
