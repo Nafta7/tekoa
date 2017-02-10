@@ -1,3 +1,5 @@
+sourceMaps = (process.env.NODE_ENV !== 'production')
+
 module.exports = {
   use: [
     "postcss-easy-import",
@@ -20,5 +22,5 @@ module.exports = {
   },
   "input": "app/styles/main.sss",
   "output": "build/main.css",
-  "map": true
+  "map": sourceMaps
 };
