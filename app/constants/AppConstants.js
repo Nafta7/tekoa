@@ -1,7 +1,9 @@
 const AppConstants = {
   DEV_MODE: "dev",
   PROD_MODE: "prod",
-  MAX_RESULTS: 10
+  THROTTLE_TIME_MS: 1000,
+  CONTENT_MAX_RESULTS: 10,
+  PLAYLIST_ITEMS_MAX_RESULTS: 25
 }
 
 export default AppConstants

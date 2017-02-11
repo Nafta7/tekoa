@@ -7,7 +7,7 @@ const baseUrl = `https://www.googleapis.com/youtube/v3`
 function getContent(query, type, pageToken = '') {
   const resource = 'search'
   let params = `part=snippet&key=${key}&type=${type}`
-  params += `&maxResults=${AppConstants.MAX_RESULTS}`
+  params += `&maxResults=${AppConstants.CONTENT_MAX_RESULTS}`
   let url = `${baseUrl}/${resource}?${params}&q=${query}`
 
   if (pageToken !== '') {
@@ -35,7 +35,7 @@ function getContent(query, type, pageToken = '') {
 function getPlaylistsByChannel(channelId, pageToken = '') {
   const resource = 'playlists'
   let params = `part=snippet&key=${key}`
-  params += `&maxResults=${AppConstants.MAX_RESULTS}`
+  params += `&maxResults=${AppConstants.CONTENT_MAX_RESULTS}`
   let url = `${baseUrl}/${resource}?${params}&channelId=${channelId}`
 
   if (pageToken !== '') {
@@ -60,32 +60,56 @@ function getPlaylistsByChannel(channelId, pageToken = '') {
     })
 }
 
-function getPlaylist(id, type) {
+function playlistItemsAPI() {
   const resource = 'playlistItems'
   const paramKey = `key=${key}`
   const part = `part=snippet`
-  const params = `${part}&maxResults=50&order=date&${paramKey}`
+  let params = `${part}&maxResults=${AppConstants.PLAYLIST_ITEMS_MAX_RESULTS}`
+  params += `&order=date&${paramKey}`
 
-  let url = `${baseUrl}/${resource}?${params}`
+  return `${baseUrl}/${resource}?${params}`
+}
 
+function getPlaylist(id, type, pageToken) {
   if (type === ContentType.CHANNEL) {
     return getChannelPlaylist(id)
-      .then(uploadsId => {
-        return getPlaylistItems(`${url}&playlistId=${uploadsId}`)
-      })
+      .then(uploadsId => getPlaylistItems(uploadsId, pageToken))
   } else {
-    return getPlaylistItems(`${url}&playlistId=${id}`)
+    return getPlaylistItems(id, pageToken)
   }
 }
 
-function getPlaylistItems(url) {
-  return fetchPlaylistItems(url)
+function getPlaylistItems(id, pageToken) {
+  return fetchPlaylistItems(id, pageToken)
+}
+
+function fetchPlaylistItems(id, pageToken) {
+  const url = `${playlistItemsAPI()}&playlistId=${id}`
+  let newUrl = (pageToken)
+    ? `${url}&pageToken=${pageToken}`
+    : url
+
+  return fetch(newUrl)
+    .then(res => res.json())
+    .then(data => {
+      let items = data.items.map(item => {
+        return {
+          title: item.snippet.title,
+          videoId: item.snippet.resourceId.videoId,
+          thumbnails: item.snippet.thumbnails
+        }
+      })
+
+      const newData = Object.assign({}, data, {items, playlistId: id})
+      return newData
+    })
 }
 
 /*
   Recursive function that fetches all the PlaylistItems.
 */
-function fetchPlaylistItems(url, results = [], nextPageToken) {
+function fetchPlaylistItemsAtOnce(id, results = [], nextPageToken) {
+  const url = `${playlistItemsAPI()}&playlistId=${id}`
   let newUrl = (nextPageToken)
     ? `${url}&pageToken=${nextPageToken}`
     : url
@@ -105,7 +129,7 @@ function fetchPlaylistItems(url, results = [], nextPageToken) {
       results = results.concat(items)
 
       if (data.nextPageToken) {
-        return fetchPlaylistItems(url, results, data.nextPageToken)
+        return fetchPlaylistItemsAtOnce(url, results, data.nextPageToken)
       } else {
         const newData = Object.assign({}, data, {items: results})
         return newData

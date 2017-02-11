@@ -2,7 +2,7 @@ import Inferno from 'inferno'
 import PlaylistItem from './PlaylistItem'
 
 const PlaylistGrid = ({ items, isVisible, viewType, hasMoreResults,
-  onItemClick, onPlaylistsClick, onLoadMore
+  onContentItemClick, onPlaylistsClick, onLoadMore
 }) => {
   const gridVisibility = 'show'
   return (
@@ -15,7 +15,7 @@ const PlaylistGrid = ({ items, isVisible, viewType, hasMoreResults,
                 channelId={item.channelId}
                 title={item.title}
                 thumbnails={item.thumbnails}
-                onClick={onItemClick}
+                onClick={onContentItemClick}
                 viewType={viewType}
                 onPlaylistsClick={onPlaylistsClick}
               />

@@ -2,7 +2,7 @@ import Inferno from 'inferno'
 import ChannelItem from './ChannelItem'
 
 const ChannelGrid = ({ items, hasMoreResults,
-  onItemClick, onPlaylistsClick, onLoadMore
+  onContentItemClick, onPlaylistsClick, onLoadMore
 }) => {
   const gridVisibility = 'show'
   return (
@@ -14,7 +14,7 @@ const ChannelGrid = ({ items, hasMoreResults,
               id={item.id}
               title={item.title}
               thumbnails={item.thumbnails}
-              onClick={onItemClick}
+              onClick={onContentItemClick}
               onPlaylistsClick={onPlaylistsClick}
             />
           )

@@ -28,7 +28,9 @@ class AppContainer extends Component {
       vids: [],
       results: [],
       resultsPageToken: '',
+      playlistPageToken: null,
       currentItem: null,
+      currentPlaylistId: null,
       selectedChannelId: null,
       selectedType: ContentType.PLAYLIST,
       viewType: ContentType.PLAYLIST,
@@ -40,7 +42,7 @@ class AppContainer extends Component {
 
     this.handleQueryChange = this.handleQueryChange.bind(this)
     this.handleSubmit = this.handleSubmit.bind(this)
-    this.handleItemClick = this.handleItemClick.bind(this)
+    this.handleContentItemClick = this.handleContentItemClick.bind(this)
     this.handleVideoClick = this.handleVideoClick.bind(this)
     this.handleNextVideo = this.handleNextVideo.bind(this)
     this.handlePreviousVideo = this.handlePreviousVideo.bind(this)
@@ -52,7 +54,9 @@ class AppContainer extends Component {
     this.handleContentTypeChange = this.handleContentTypeChange.bind(this)
     this.handlePlaylistsClick = this.handlePlaylistsClick.bind(this)
     this.handleLoadMore = this.handleLoadMore.bind(this)
+    this.handlePlaylistScroll = this.handlePlaylistScroll.bind(this)
     this.hasMoreResults = this.hasMoreResults.bind(this)
+    this.hasMorePlaylistItems = this.hasMorePlaylistItems.bind(this)
   }
 
   componentDidMount() {
@@ -78,6 +82,10 @@ class AppContainer extends Component {
 
   hasMoreResults() {
     return Boolean(this.state.resultsPageToken)
+  }
+
+  hasMorePlaylistItems() {
+    return Boolean(this.state.playlistPageToken)
   }
 
   handleQueryChange(e) {
@@ -167,7 +175,7 @@ class AppContainer extends Component {
       .catch(err => console.log('Error: ', err))
   }
 
-  handleItemClick(e, id) {
+  handleContentItemClick(e, id) {
     e.preventDefault()
 
     this.fetchPlaylist(id, this.state.selectedType)
@@ -187,9 +195,32 @@ class AppContainer extends Component {
     return getPlaylist(id, type)
       .then(data => {
         this.setState({
-          vids: data.items
+          vids: data.items,
+          currentPlaylistId: data.playlistId,
+          playlistPageToken: data.nextPageToken
         })
       })
+  }
+
+  handlePlaylistScroll(e) {
+    const el = e.target
+    const offset = el.offsetHeight + el.scrollTop
+    const height = el.scrollHeight  - 100
+    const isCloseToEnd = (offset) >= (height)
+
+    if (isCloseToEnd && this.hasMorePlaylistItems()) {
+      getPlaylist(
+        this.state.currentPlaylistId,
+        ContentType.PLAYLIST,
+        this.state.playlistPageToken
+      )
+      .then(data => {
+        this.setState({
+          vids: this.state.vids.concat(data.items),
+          playlistPageToken: data.nextPageToken
+        })
+      })
+    }
   }
 
   handleVideoClick(id, index) {
@@ -262,7 +293,7 @@ class AppContainer extends Component {
             ? <ChannelGrid
                 items={this.state.results}
                 hasMoreResults={this.hasMoreResults}
-                onItemClick={this.handleItemClick}
+                onContentItemClick={this.handleContentItemClick}
                 onPlaylistsClick={this.handlePlaylistsClick}
                 onLoadMore={this.handleLoadMore}
 
@@ -272,7 +303,7 @@ class AppContainer extends Component {
                 items={this.state.results}
                 viewType={this.state.viewType}
                 hasMoreResults={this.hasMoreResults}
-                onItemClick={this.handleItemClick}
+                onContentItemClick={this.handleContentItemClick}
                 onPlaylistsClick={this.handlePlaylistsClick}
                 onLoadMore={this.handleLoadMore}
               />
@@ -280,9 +311,10 @@ class AppContainer extends Component {
 
           <Playlist
             vids={this.state.vids}
-            onVideoClick={this.handleVideoClick}
             currentItem={this.state.currentItem}
             isVisible={this.state.isPlaylistVisible}
+            onVideoClick={this.handleVideoClick}
+            onScroll={this.handlePlaylistScroll}
           />
         </div>
 
