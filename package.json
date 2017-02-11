@@ -18,7 +18,7 @@
     "production": "npm run production:build && npm run minify",
     "production:build:js": "NODE_ENV=production browserify -d app/index.js -o build/bundle.js  -t [ babelify --presets [ es2015 ] --plugins [ inferno ] ]",
     "production:build:css": "NODE_ENV=production postcss -c ./postcss-config.js",
-    "postproduction:build": "npm run mode:development",
+    "postpublish": "npm run mode:development",
     "production:publish": "gh-pages -d build",
     "production:clean": "rm build/*.css build/*.js",
     "publish": "npm run production && npm run production:publish",
