@@ -1,7 +1,5 @@
 # TODO
 
-- [x] Allow to load more content in the search results.
-- [x] Fetch playlist should return all videos at once.
 - [ ] Inform the user in case the search return was empty.
 - [ ] Add loading animations.
 
