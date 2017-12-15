@@ -1,23 +1,31 @@
 {
   "scripts": {
-    "serve": "browser-sync start --server './' --index 'index.html' --files 'build/main.css, ./build/bundle.js'",
+    "serve":
+      "browser-sync start --server './' --index 'index.html' --files 'build/main.css, ./build/bundle.js'",
     "build": "npm run build:js | npm run build:css",
     "build:css": "postcss -c ./postcss-config.js",
     "watch:css": "postcss -c ./postcss-config.js -w",
-    "build:fp:js": "browserify --full-paths -d app/index.js -o build/bundle.js -t [ babelify --presets [ es2015  ] --plugins [ inferno ] ]",
-    "build:js": "browserify --debug -d app/index.js -o build/bundle.js  -t [ babelify --presets [ es2015 ] --plugins [ inferno ] ]",
-    "watch:js": "watchify --debug -d app/index.js -o build/bundle.js  -t [ babelify --presets [ es2015  ] --plugins [ inferno ] ]",
+    "build:fp:js":
+      "browserify --full-paths -d app/index.js -o build/bundle.js -t [ babelify --presets [ es2015  ] --plugins [ inferno ] ]",
+    "build:js":
+      "browserify --debug -d app/index.js -o build/bundle.js  -t [ babelify --presets [ es2015 ] --plugins [ inferno ] ]",
+    "watch:js":
+      "watchify --debug -d app/index.js -o build/bundle.js  -t [ babelify --presets [ es2015  ] --plugins [ inferno ] ]",
     "start": "npm run watch:js & npm run watch:css & npm run serve",
-    "minify:js": "NODE_ENV=production babili build/bundle.js -o build/bundle.min.js",
+    "minify:js":
+      "NODE_ENV=production babili build/bundle.js -o build/bundle.min.js",
     "minify:css": "postcss -u cssnano build/main.css -o build/main.min.css",
     "minify": "npm run minify:js | npm run minify:css",
-    "bundle:analysis": "npm run build:fp:js && npm run minify:js && discify build/bundle.min.js > disc.html --open",
+    "bundle:analysis":
+      "npm run build:fp:js && npm run minify:js && discify build/bundle.min.js > disc.html --open",
     "inspect:gzip": "gzip-size build/bundle.min.js | pretty-bytes",
     "preproduction:build": "npm run mode:production",
     "production:build": "npm run build:css | npm run production:build:js",
     "production": "npm run production:build && npm run minify",
-    "production:build:js": "NODE_ENV=production browserify -d app/index.js -o build/bundle.js  -t [ babelify --presets [ es2015 ] --plugins [ inferno ] ]",
-    "production:build:css": "NODE_ENV=production postcss -c ./postcss-config.js",
+    "production:build:js":
+      "NODE_ENV=production browserify -d app/index.js -o build/bundle.js  -t [ babelify --presets [ es2015 ] --plugins [ inferno ] ]",
+    "production:build:css":
+      "NODE_ENV=production postcss -c ./postcss-config.js",
     "postpublish": "npm run mode:development",
     "production:publish": "gh-pages -d build",
     "production:clean": "rm build/*.css build/*.js",
@@ -28,7 +36,7 @@
   "name": "tekoa",
   "version": "1.0.0",
   "main": "index.js",
-  "author": "nafta <naftasan@gmail.com>",
+  "author": "Nefla <neflasan@gmail.com>",
   "license": "MIT",
   "dependencies": {
     "inferno": "^1.2.1",
